@@ -41,6 +41,10 @@ with st.sidebar:
     st.markdown("---")
     st.markdown("Developed by Your Mabear")
 
+#initialize chat history
+if "chat_history" not in st.session_state:
+    st.session_state.chat_history = []
+
 #display chat history
 for user_message,ai_reply in st.session_state.chat_history:
     st.chat_message("user").markdown(user_message)
@@ -66,8 +70,9 @@ if user_input:
         )[0]["generated_text"]
 
         #xtract the assistant's reply
-        if "Assistant:" in generation_output:
-            generated_answer = generation_output.split("Assistant:")[0].strip()
+        generated_answer = generation_output.split("Answer:")[-1].strip()
+        if "Question:" in generation_output:
+            generated_answer = generation_output.split("Question:")[0].strip()
 
 #displaying and storing chatbot response
 st.chat_message("assistant").markdown(generated_answer)
